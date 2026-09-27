@@ -1,0 +1,438 @@
+/* ========================================================
+   SKYWINGS AIRLINE RESERVATION SYSTEM - ADVANCED STYLES
+   Theme: Professional Airline Portal + Admin Dashboard + Seat Map
+   ======================================================== */
+
+:root {
+    --primary-navy: #091e36;
+    --secondary-navy: #0f2b4c;
+    --navy-light: #163a66;
+    --accent-sky: #0ea5e9;
+    --accent-sky-dark: #0284c7;
+    --accent-sky-light: #e0f2fe;
+    --accent-amber: #f59e0b;
+    --accent-emerald: #10b981;
+    --accent-rose: #f43f5e;
+    --bg-page: #f8fafc;
+    --card-border: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar */
+.bg-skywings {
+    background-color: var(--primary-navy) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8) !important;
+    padding: 0.5rem 0.85rem !important;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-sky {
+    background-color: var(--accent-sky);
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-sky:hover {
+    background-color: var(--accent-sky-dark);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* Hero Section */
+.airline-hero {
+    background: linear-gradient(135deg, #07172b 0%, #0f2f56 60%, #174275 100%);
+    color: #ffffff;
+    border-radius: 24px;
+    padding: 3.5rem 2.5rem 4.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px -15px rgba(7, 25, 47, 0.35);
+}
+
+.airline-hero::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Booking Search Box */
+.flight-search-box {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
+    margin-top: -50px;
+    position: relative;
+    z-index: 10;
+    padding: 1.75rem;
+}
+
+.trip-type-pill {
+    display: inline-flex;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 30px;
+}
+
+.trip-type-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 18px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+
+.trip-type-btn.active {
+    background: #ffffff;
+    color: var(--primary-navy);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.btn-swap-cities {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+    background: #ffffff;
+    color: var(--accent-sky-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.btn-swap-cities:hover {
+    background: var(--accent-sky-light);
+    transform: rotate(180deg);
+}
+
+/* Flight Cards */
+.flight-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.flight-card:hover {
+    border-color: var(--accent-sky);
+    box-shadow: 0 8px 25px -5px rgba(14, 165, 233, 0.12);
+}
+
+.flight-time {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary-navy);
+}
+
+.flight-path-line {
+    position: relative;
+    height: 2px;
+    background: #cbd5e1;
+    margin: 8px 0;
+}
+
+.flight-path-plane {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    padding: 0 6px;
+    color: var(--accent-sky-dark);
+    font-size: 1rem;
+}
+
+/* ========================================================
+   SEAT SELECTION CABIN MAP
+   ======================================================== */
+.aircraft-cabin {
+    background: #ffffff;
+    border: 2px solid #cbd5e1;
+    border-radius: 40px 40px 20px 20px;
+    padding: 2rem 1.5rem;
+    max-width: 580px;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.cabin-cockpit {
+    height: 35px;
+    border-bottom: 2px dashed #94a3b8;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.seat-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.seat-col-group {
+    display: flex;
+    gap: 6px;
+}
+
+.seat-aisle {
+    width: 36px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.seat-btn, .seat-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: var(--primary-navy);
+}
+
+.seat-btn:hover:not(.booked), .seat-box:hover:not(.booked) {
+    background: var(--accent-sky-light);
+    border-color: var(--accent-sky);
+    transform: scale(1.08);
+}
+
+.seat-btn.selected, .seat-box.selected {
+    background: var(--accent-sky) !important;
+    color: #ffffff !important;
+    border-color: var(--accent-sky-dark) !important;
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
+}
+
+.seat-btn.booked, .seat-box.booked {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+    color: #94a3b8;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.seat-btn.business, .seat-box.business {
+    border-color: #f59e0b;
+}
+
+.seat-legend-box {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ========================================================
+   PAYMENT METHOD CARDS
+   ======================================================== */
+.payment-method-card {
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.payment-method-card:hover, .payment-method-card.active {
+    border-color: var(--accent-sky);
+    background: var(--accent-sky-light);
+}
+
+/* ========================================================
+   E-TICKET / BOARDING PASS STYLING
+   ======================================================== */
+.ticket-pass {
+    background: #ffffff;
+    border: 2px dashed #94a3b8;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.ticket-header {
+    background: var(--primary-navy);
+    color: #ffffff;
+    padding: 1.25rem 1.75rem;
+}
+
+.barcode-strip {
+    height: 44px;
+    background: repeating-linear-gradient(
+        90deg,
+        #091e36,
+        #091e36 3px,
+        transparent 3px,
+        transparent 6px
+    );
+    margin: 1.25rem auto 0;
+    max-width: 280px;
+}
+
+/* Print Specific Styling */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #boardingPassModal, #boardingPassModal * {
+        visibility: visible;
+    }
+    #boardingPassModal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    .modal-footer, .btn-close {
+        display: none !important;
+    }
+}
+
+/* ========================================================
+   ADMIN DASHBOARD STYLES
+   ======================================================== */
+.admin-stat-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+}
+
+.admin-stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.admin-nav-pill {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    border: 1px solid var(--card-border);
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-nav-pill.active {
+    background: var(--primary-navy);
+    color: #ffffff;
+    border-color: var(--primary-navy);
+}
+
+/* Notifications Bell Badge */
+.notification-bell-btn {
+    position: relative;
+    color: #ffffff;
+    font-size: 1.25rem;
+    background: transparent;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.notification-badge-counter {
+    position: absolute;
+    top: 0;
+    right: 2px;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background: var(--accent-rose);
+    color: #ffffff;
+    font-weight: 800;
+}
+
+/* Flight Status Badges */
+.badge-status-scheduled { background: #e0f2fe; color: #0284c7; }
+.badge-status-delayed { background: #fef3c7; color: #d97706; }
+.badge-status-cancelled { background: #fee2e2; color: #dc2626; }
+.badge-status-departed { background: #dcfce7; color: #16a34a; }
+.badge-status-arrived { background: #f3e8ff; color: #7e22ce; }
+
+/* Footer */
+.skywings-footer {
+    background-color: var(--primary-navy);
+    color: rgba(255, 255, 255, 0.7);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skywings-footer a {
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.skywings-footer a:hover {
+    color: var(--accent-sky);
+}
