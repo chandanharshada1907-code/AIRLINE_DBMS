@@ -22,8 +22,8 @@
     <!-- ======================================================== -->
     <!-- HEADER / NAVIGATION -->
     <!-- ======================================================== -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-skywings sticky-top py-3">
-        <div class="container-fluid px-3 px-lg-4 px-xl-5">
+    <nav class="navbar navbar-expand-md navbar-dark bg-skywings sticky-top py-2">
+        <div class="container-fluid px-2 px-md-3 px-xl-4">
             <a class="navbar-brand d-flex align-items-center gap-2" href="#" onclick="showSection('home-section')">
                 <i class="bi bi-airplane-engines-fill text-info fs-3"></i>
                 <span class="brand-title text-white">SkyWings</span>
@@ -34,7 +34,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="skyNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-1">
+                <ul class="navbar-nav me-auto mb-0 ms-md-2 ms-xl-3 gap-1">
                     <li class="nav-item">
                         <a class="nav-link active nav-tab" id="nav-home" href="#" onclick="showSection('home-section')">
                             Home
@@ -63,37 +63,37 @@
                 </ul>
 
                 <!-- Right Side: Notifications, Admin Portal & Profile -->
-                <div class="d-flex align-items-center gap-2 gap-lg-3 mt-3 mt-lg-0 flex-wrap flex-lg-nowrap">
+                <div class="d-flex align-items-center gap-1 gap-md-2 gap-xl-3 mt-3 mt-md-0 flex-nowrap">
                     
                     <!-- Notification Bell Icon (Live In-App Notifications) -->
-                    <button type="button" class="notification-bell-btn" title="Notifications" onclick="openNotificationsModal()">
+                    <button type="button" class="notification-bell-btn px-1 px-md-2" title="Notifications" onclick="openNotificationsModal()">
                         <i class="bi bi-bell-fill"></i>
                         <span id="notif-badge" class="notification-badge-counter d-none">0</span>
                     </button>
 
                     <!-- Admin Portal Button -->
-                    <button class="btn btn-outline-warning btn-sm px-3 rounded-pill text-nowrap" onclick="openAdminPortal()">
+                    <button class="btn btn-outline-warning btn-sm px-2 px-md-3 rounded-pill text-nowrap" onclick="openAdminPortal()">
                         <i class="bi bi-shield-lock-fill me-1"></i> Admin Portal
                     </button>
 
                     <!-- Auth State: Logged Out -->
-                    <div id="nav-auth-logged-out" class="d-flex gap-2">
-                        <button class="btn btn-outline-light btn-sm px-3 rounded-pill text-nowrap" onclick="openAuthModal('login')">
+                    <div id="nav-auth-logged-out" class="d-flex gap-1 gap-md-2">
+                        <button class="btn btn-outline-light btn-sm px-2 px-md-3 rounded-pill text-nowrap" onclick="openAuthModal('login')">
                             Sign In
                         </button>
-                        <button class="btn btn-sky btn-sm px-3 rounded-pill text-nowrap" onclick="openAuthModal('register')">
+                        <button class="btn btn-sky btn-sm px-2 px-md-3 rounded-pill text-nowrap" onclick="openAuthModal('register')">
                             Register
                         </button>
                     </div>
 
                     <!-- Auth State: Logged In -->
-                    <div id="nav-auth-logged-in" class="d-none align-items-center gap-2">
-                        <div class="d-flex align-items-center gap-2 bg-white bg-opacity-10 px-3 py-1 rounded-pill border border-white border-opacity-25 text-white text-nowrap">
+                    <div id="nav-auth-logged-in" class="d-none align-items-center gap-1 gap-md-2">
+                        <div class="d-flex align-items-center gap-1 gap-md-2 bg-white bg-opacity-10 px-2 px-md-3 py-1 rounded-pill border border-white border-opacity-25 text-white text-nowrap">
                             <i class="bi bi-person-circle text-info"></i>
                             <span id="nav-user-name" class="fw-medium small">User</span>
                             <span id="nav-user-role-badge" class="badge bg-info text-dark small" style="font-size: 0.65rem;">USER</span>
                         </div>
-                        <button class="btn btn-outline-danger btn-sm px-3 rounded-pill text-nowrap" onclick="logoutUser()">
+                        <button class="btn btn-outline-danger btn-sm px-2 px-md-3 rounded-pill text-nowrap" onclick="logoutUser()">
                             Sign Out
                         </button>
                     </div>
