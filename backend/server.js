@@ -24,30 +24,85 @@ async function initAdvancedSchema() {
     try {
         console.log("🛠️  Checking & initializing advanced DBMS schema...");
 
-        // 1. Non-destructively enhance users table
-        const [userCols] = await db.query("DESCRIBE users");
-        const userColNames = userCols.map(c => c.Field);
-        if (!userColNames.includes("role")) {
-            await db.query("ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'USER'");
-        }
-        if (!userColNames.includes("phone")) {
-            await db.query("ALTER TABLE users ADD COLUMN phone VARCHAR(20) DEFAULT ''");
-        }
-        if (!userColNames.includes("is_active")) {
-            await db.query("ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT TRUE");
-        }
-        if (!userColNames.includes("created_at")) {
-            await db.query("ALTER TABLE users ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
-        }
+        // 1. Core Table: users
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                user_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                email VARCHAR(100) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                phone VARCHAR(20) DEFAULT '',
+                role ENUM('USER', 'ADMIN') DEFAULT 'USER',
+                is_active BOOLEAN DEFAULT TRUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
 
-        // 2. Non-destructively enhance flights table
-        const [flightCols] = await db.query("DESCRIBE flights");
-        const flightColNames = flightCols.map(c => c.Field);
-        if (!flightColNames.includes("status")) {
-            await db.query("ALTER TABLE flights ADD COLUMN status VARCHAR(20) DEFAULT 'SCHEDULED'");
-        }
+        // 2. Core Table: airports
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS airports (
+                airport_id INT AUTO_INCREMENT PRIMARY KEY,
+                airport_code VARCHAR(10) NOT NULL UNIQUE,
+                airport_name VARCHAR(150) NOT NULL,
+                city VARCHAR(100) NOT NULL,
+                state VARCHAR(100),
+                country VARCHAR(100) DEFAULT 'India'
+            )
+        `);
 
-        // 3. Create seats table
+        // 3. Core Table: aircraft
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS aircraft (
+                aircraft_id INT AUTO_INCREMENT PRIMARY KEY,
+                aircraft_number VARCHAR(20) NOT NULL UNIQUE,
+                aircraft_type VARCHAR(50) NOT NULL,
+                total_seats INT DEFAULT 180,
+                airline VARCHAR(50) NOT NULL
+            )
+        `);
+
+        // 4. Core Table: flights
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS flights (
+                flight_id INT AUTO_INCREMENT PRIMARY KEY,
+                flight_number VARCHAR(20) NOT NULL UNIQUE,
+                source VARCHAR(100) NOT NULL,
+                destination VARCHAR(100) NOT NULL,
+                departure_time DATETIME NOT NULL,
+                arrival_time DATETIME NOT NULL,
+                price DECIMAL(10, 2) NOT NULL,
+                total_seats INT NOT NULL DEFAULT 180,
+                status VARCHAR(20) DEFAULT 'SCHEDULED'
+            )
+        `);
+
+        // 5. Core Table: passengers
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS passengers (
+                passenger_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                age INT NOT NULL,
+                gender VARCHAR(20) NOT NULL,
+                passport_no VARCHAR(50)
+            )
+        `);
+
+        // 6. Relational Table: bookings
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS bookings (
+                booking_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                passenger_id INT NOT NULL,
+                flight_id INT NOT NULL,
+                seat_no VARCHAR(10) NOT NULL,
+                booking_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+                FOREIGN KEY (passenger_id) REFERENCES passengers(passenger_id) ON DELETE CASCADE,
+                FOREIGN KEY (flight_id) REFERENCES flights(flight_id) ON DELETE CASCADE
+            )
+        `);
+
+        // 7. Relational Table: seats
         await db.query(`
             CREATE TABLE IF NOT EXISTS seats (
                 seat_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -60,7 +115,7 @@ async function initAdvancedSchema() {
             )
         `);
 
-        // 4. Create payments table
+        // 8. Relational Table: payments
         await db.query(`
             CREATE TABLE IF NOT EXISTS payments (
                 payment_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -74,7 +129,7 @@ async function initAdvancedSchema() {
             )
         `);
 
-        // 5. Create refunds table
+        // 9. Relational Table: refunds
         await db.query(`
             CREATE TABLE IF NOT EXISTS refunds (
                 refund_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -86,7 +141,7 @@ async function initAdvancedSchema() {
             )
         `);
 
-        // 6. Create waitlist table
+        // 10. Relational Table: waitlist
         await db.query(`
             CREATE TABLE IF NOT EXISTS waitlist (
                 waitlist_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -103,7 +158,7 @@ async function initAdvancedSchema() {
             )
         `);
 
-        // 7. Create notifications table
+        // 11. Relational Table: notifications
         await db.query(`
             CREATE TABLE IF NOT EXISTS notifications (
                 notification_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -117,17 +172,28 @@ async function initAdvancedSchema() {
             )
         `);
 
-        // 8. Create airports table
-        await db.query(`
-            CREATE TABLE IF NOT EXISTS airports (
-                airport_id INT AUTO_INCREMENT PRIMARY KEY,
-                airport_code VARCHAR(10) UNIQUE NOT NULL,
-                airport_name VARCHAR(150) NOT NULL,
-                city VARCHAR(100) NOT NULL,
-                state VARCHAR(100),
-                country VARCHAR(100) DEFAULT 'India'
-            )
-        `);
+        // Non-destructively enhance users table if any columns are missing
+        const [userCols] = await db.query("DESCRIBE users");
+        const userColNames = userCols.map(c => c.Field);
+        if (!userColNames.includes("role")) {
+            await db.query("ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'USER'");
+        }
+        if (!userColNames.includes("phone")) {
+            await db.query("ALTER TABLE users ADD COLUMN phone VARCHAR(20) DEFAULT ''");
+        }
+        if (!userColNames.includes("is_active")) {
+            await db.query("ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT TRUE");
+        }
+        if (!userColNames.includes("created_at")) {
+            await db.query("ALTER TABLE users ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
+        }
+
+        // Non-destructively enhance flights table if any columns are missing
+        const [flightCols] = await db.query("DESCRIBE flights");
+        const flightColNames = flightCols.map(c => c.Field);
+        if (!flightColNames.includes("status")) {
+            await db.query("ALTER TABLE flights ADD COLUMN status VARCHAR(20) DEFAULT 'SCHEDULED'");
+        }
 
         // Seed default Indian airports if empty
         const [airportCount] = await db.query("SELECT COUNT(*) AS count FROM airports");
@@ -144,17 +210,6 @@ async function initAdvancedSchema() {
             `);
         }
 
-        // 9. Create aircraft table
-        await db.query(`
-            CREATE TABLE IF NOT EXISTS aircraft (
-                aircraft_id INT AUTO_INCREMENT PRIMARY KEY,
-                aircraft_number VARCHAR(20) UNIQUE NOT NULL,
-                aircraft_type VARCHAR(50) NOT NULL,
-                total_seats INT DEFAULT 180,
-                airline VARCHAR(50) NOT NULL
-            )
-        `);
-
         // Seed aircraft if empty
         const [aircraftCount] = await db.query("SELECT COUNT(*) AS count FROM aircraft");
         if (aircraftCount[0].count === 0) {
@@ -168,7 +223,7 @@ async function initAdvancedSchema() {
             `);
         }
 
-        // 10. Ensure Admin account exists in MySQL
+        // Ensure Admin account exists in MySQL
         const [adminRows] = await db.query("SELECT user_id FROM users WHERE email = 'admin@skywings.com'");
         if (adminRows.length === 0) {
             await db.query("INSERT INTO users (name, email, password, role) VALUES ('SkyWings Administrator', 'admin@skywings.com', 'admin123', 'ADMIN')");
@@ -176,7 +231,7 @@ async function initAdvancedSchema() {
             await db.query("UPDATE users SET role = 'ADMIN' WHERE email = 'admin@skywings.com'");
         }
 
-        // 11. Create SQL View
+        // Create SQL Views
         try {
             await db.query(`
                 CREATE OR REPLACE VIEW view_available_flights AS
@@ -194,7 +249,42 @@ async function initAdvancedSchema() {
                 FROM flights f
             `);
         } catch (vErr) {
-            console.warn("View creation warning:", vErr.message);
+            console.warn("View creation warning (view_available_flights):", vErr.message);
+        }
+
+        try {
+            await db.query(`
+                CREATE OR REPLACE VIEW view_booking_details AS
+                SELECT 
+                    b.booking_id,
+                    b.seat_no,
+                    b.booking_date,
+                    u.user_id,
+                    u.name AS user_name,
+                    u.email AS user_email,
+                    f.flight_id,
+                    f.flight_number,
+                    f.source,
+                    f.destination,
+                    f.departure_time,
+                    f.arrival_time,
+                    f.status AS flight_status,
+                    p.passenger_id,
+                    p.name AS passenger_name,
+                    p.age,
+                    p.gender,
+                    pm.amount AS total_fare_paid,
+                    pm.payment_method,
+                    pm.payment_status,
+                    pm.transaction_id
+                FROM bookings b
+                JOIN users u ON b.user_id = u.user_id
+                JOIN flights f ON b.flight_id = f.flight_id
+                JOIN passengers p ON b.passenger_id = p.passenger_id
+                LEFT JOIN payments pm ON b.booking_id = pm.booking_id
+            `);
+        } catch (vErr) {
+            console.warn("View creation warning (view_booking_details):", vErr.message);
         }
 
         console.log("✅ Advanced DBMS schema initialized successfully!");
